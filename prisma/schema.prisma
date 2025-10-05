@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  papers Paper[]
+
+  @@map("users")
+}
+
+model Paper {
+  id          String   @id @default(cuid())
+  title       String
+  authors     String[]
+  abstract    String?
+  doi         String?
+  publicationDate DateTime?
+  journal     String?
+  volume      String?
+  issue       String?
+  pages       String?
+  pdfUrl      String?
+  pdfPath     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  details PaperDetails?
+
+  @@map("papers")
+}
+
+model PaperDetails {
+  id          String   @id @default(cuid())
+  summary     String?
+  methodology String?
+  benefits    String?
+  verification String?
+  discussion  String?
+  tags        String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  paperId String @unique
+  paper   Paper  @relation(fields: [paperId], references: [id], onDelete: Cascade)
+
+  @@map("paper_details")
+}
