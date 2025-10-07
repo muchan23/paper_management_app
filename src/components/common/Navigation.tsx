@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/Button';
-import { FileText, Home, LogOut, Settings, User } from 'lucide-react';
+import { FileText, Home, LogOut, Settings, User, Upload } from 'lucide-react';
 
 export function Navigation() {
   const { data: session, status } = useSession();
@@ -38,6 +38,12 @@ export function Navigation() {
                   <Button variant="ghost" size="sm">
                     <FileText className="h-4 w-4 mr-2" />
                     論文一覧
+                  </Button>
+                </Link>
+                <Link href="/papers/upload">
+                  <Button variant="ghost" size="sm">
+                    <Upload className="h-4 w-4 mr-2" />
+                    アップロード
                   </Button>
                 </Link>
                 <Link href="/settings">
